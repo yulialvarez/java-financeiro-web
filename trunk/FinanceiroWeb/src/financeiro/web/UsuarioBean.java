@@ -46,7 +46,7 @@ public class UsuarioBean {
 	}
 	
 	public String novo(){
-		return "resultado";
+		return "usuario";
 	}
 	
 	public String salvar(){
