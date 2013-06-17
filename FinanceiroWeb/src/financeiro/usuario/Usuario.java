@@ -20,7 +20,7 @@ public class Usuario  implements Serializable{
 	@org.hibernate.annotations.NaturalId
 	private String login; 
 	private String senha;
-	private Date dataNascimento;
+	private Date nascimento;
 	private String celular;
 	private String idioma;
 	private boolean ativo;
@@ -54,12 +54,6 @@ public class Usuario  implements Serializable{
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	public Date getDataNascimento() {
-		return dataNascimento;
-	}
-	public void setDataNascimento(Date dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
 	public String getCelular() {
 		return celular;
 	}
@@ -78,6 +72,12 @@ public class Usuario  implements Serializable{
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
+	public Date getNascimento() {
+		return nascimento;
+	}
+	public void setNascimento(Date nascimento) {
+		this.nascimento = nascimento;
+	}
 	
 	@Override
 	public int hashCode() {
@@ -87,7 +87,7 @@ public class Usuario  implements Serializable{
 		result = prime * result + ((celular == null) ? 0 : celular.hashCode());
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
 		result = prime * result
-				+ ((dataNascimento == null) ? 0 : dataNascimento.hashCode());
+				+ ((nascimento == null) ? 0 : nascimento.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((idioma == null) ? 0 : idioma.hashCode());
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
@@ -117,10 +117,10 @@ public class Usuario  implements Serializable{
 				return false;
 		} else if (!codigo.equals(other.codigo))
 			return false;
-		if (dataNascimento == null) {
-			if (other.dataNascimento != null)
+		if (nascimento == null) {
+			if (other.nascimento != null)
 				return false;
-		} else if (!dataNascimento.equals(other.dataNascimento))
+		} else if (!nascimento.equals(other.nascimento))
 			return false;
 		if (email == null) {
 			if (other.email != null)
