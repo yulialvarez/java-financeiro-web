@@ -30,4 +30,15 @@
   <listener>
     <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
   </listener>
+  
+  <filter>
+  	<filter-name>conexaoFilter</filter-name>
+  	<filter-class>financeiro.web.filter.ConexaoHibernateFilter</filter-class>
+  </filter>
+  
+  <filter-mapping>
+  	 <filter-name>conexaoFilter</filter-name>
+  	 <url-pattern>*.jsf</url-pattern>
+  </filter-mapping>
+  
 </web-app>

@@ -1,61 +1,102 @@
 package financeiro.web;
 
+import java.util.List;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
+import financeiro.usuario.Usuario;
+import financeiro.usuario.UsuarioRN;
+
 @ManagedBean(name="usuarioBean")
 @RequestScoped
-
 public class UsuarioBean {
 	
-	private String nome;
-	private String email;
-	private String senha;
+	private Usuario usuario = new Usuario();
 	private String confirmaSenha;
-	
-	public String getNome() {
-		return nome;
-	}
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getSenha() {
-		return senha;
-	}
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-	public String getConfirmaSenha() {
-		return confirmaSenha;
-	}
-	public void setConfirmaSenha(String confirmaSenha) {
-		this.confirmaSenha = confirmaSenha;
-	}
-	
-	public String operacao(){
-		//executa operação
-		return "resultado";
-	}
-	
-	public String novo(){
-		return "usuario";
-	}
+	private List<Usuario> lista;
+	private String destinoSalvar;
 	
 	public String salvar(){
 		FacesContext context = FacesContext.getCurrentInstance();
-		if(!this.senha.equalsIgnoreCase(this.confirmaSenha)){
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Senha confirmada incorretamente",""));
-			return "usuario";
+		
+		String senha = this.usuario.getSenha();
+		if(!senha.equals(this.confirmaSenha)){
+			FacesMessage facesMessage = new FacesMessage("A senha não foi confirmada corretamente");
+			context.addMessage(null, facesMessage);
+			return null;
 		}
-		return "sucesso";
+		
+		UsuarioRN usuarioRN = new UsuarioRN();
+		usuarioRN.salvar(this.usuario);
+		return "usuarioSucesso";
 	}
 	
+	public String novo(){
+		this.destinoSalvar = "usuarioSucesso";
+		this.usuario = new Usuario();
+		this.usuario.setAtivo(true);
+		return "usuario";
+	}
+	
+	public String editar(){
+		this.confirmaSenha = this.usuario.getSenha();
+		return "/publico/usuario";
+	}
+	
+	public String excluir(){
+		UsuarioRN usuarioRN = new UsuarioRN();
+		usuarioRN.excluir(usuario);
+		this.lista = null;
+		return null;
+	}
+	
+	public String ativar(){
+		if((this.usuario != null)&&
+				(this.usuario.isAtivo())
+				){
+			this.usuario.setAtivo(false);
+		} else{
+			this.usuario.setAtivo(true);
+		}
+		
+		UsuarioRN usuarioRN = new UsuarioRN();
+		usuarioRN.salvar(usuario);
+		
+		return null;
+	}
+	
+	public List<Usuario> getLista(){
+		if(this.lista==null){
+			UsuarioRN usuarioRN = new UsuarioRN();
+			this.lista = usuarioRN.listar();
+		}
+		return this.lista;
+	}
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
+	public String getConfirmaSenha() {
+		return confirmaSenha;
+	}
+	
+	public void setConfirmaSenha(String confirmaSenha) {
+		this.confirmaSenha = confirmaSenha;
+	}
+
+	public String getDestinoSalvar() {
+		return destinoSalvar;
+	}
+
+	public void setDestinoSalvar(String destinoSalvar) {
+		this.destinoSalvar = destinoSalvar;
+	}
 }
